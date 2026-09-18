@@ -129,7 +129,7 @@ body{background:linear-gradient(135deg,#faf8f4 0%,#f7fbff 55%,#faf7ff 100%)!impo
 }
 </style>
 
-</head><body><div class="app"><header><div class="brand"><h1>PEREZ FAMILY</h1><p>Family Hub <small>v0.6.1</small></p></div><div class="clock"><div id="clock"></div><div class="conn" id="conn"><button class="connbtn" id="googleSignIn">Connect Google</button></div></div></header><div class="people" id="people"></div>
+</head><body><div class="app"><header><div class="brand"><h1>PEREZ FAMILY</h1><p>Family Hub <small>v0.6.2</small></p></div><div class="clock"><div id="clock"></div><div class="conn" id="conn"><button class="connbtn" id="googleSignIn">Connect Google</button></div></div></header><div class="people" id="people"></div>
 <section id="calendarPage"><div class="toolbar"><div class="left"><button class="btn" id="prev">‹ Previous</button><button class="btn" id="today">Today</button><button class="btn" id="next">Next ›</button></div><div class="views"><button class="btn active" data-view="week">Week</button><button class="btn" data-view="month">Month</button><button class="btn" data-view="schedule">Schedule</button></div><div class="left"><button class="btn primary" id="add" disabled>＋ Add Event</button></div></div><div class="weektitle" id="range"></div><main id="content"></main><div class="panels"><div class="panel"><h2>Today</h2><div id="todayList"></div></div><div class="panel"><h2>Coming Next</h2><div id="nextList"></div></div></div></section><section id="otherPage" hidden></section></div>
 <nav class="bottom"><button class="nav active" data-page="Calendar">▣ Calendar</button><button class="nav" data-page="Chores">✓ Chores</button><button class="nav" data-page="Meals">⌂ Meals</button><button class="nav" data-page="Lists">☷ Lists</button></nav>
 <dialog id="dlg"><form class="modal" id="form"><h2 id="modalTitle">Add Event</h2><input type="hidden" id="eid"><div class="field"><label>Event</label><input id="title" required></div><div class="grid2"><div class="field"><label>Person</label><select id="person"></select></div><div class="field"><label>Date</label><input id="date" type="date" required></div></div><div class="grid2"><div class="field"><label>Start time</label><input id="time" type="time"></div><div class="field"><label>End time</label><input id="end" type="time"></div></div><div class="field"><label>Notes</label><textarea id="notes"></textarea></div><div class="actions"><button type="button" class="btn danger" id="del" hidden>Delete</button><div><button type="button" class="btn" id="cancel">Cancel</button> <button class="btn primary">Save Event</button></div></div></form></dialog>
@@ -302,4 +302,28 @@ $('#del').onclick=async()=>{let id=$('#eid').value;if(confirm('Delete this event
   document.addEventListener("DOMContentLoaded",enhanceCards);
 })();
 </script>
+
+<script id="v062-chore-click-fix">
+document.addEventListener('click',function(e){
+  const add=e.target.closest('#addChore');
+  if(add){
+    e.preventDefault();
+    if(add.disabled) return;
+    openNewChore();
+    return;
+  }
+  const edit=e.target.closest('[data-cedit]');
+  if(edit){
+    e.preventDefault();
+    editChore(edit.dataset.cedit);
+    return;
+  }
+  const check=e.target.closest('[data-check]');
+  if(check){
+    e.preventDefault();
+    toggleChore(check.dataset.check);
+  }
+});
+</script>
+
 </body></html>
