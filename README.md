@@ -1,10 +1,11 @@
-# Perez Family Hub v0.3.1
+# Perez Family Hub v0.4
 
-Google Calendar persistence update.
+Adds shared Chores on top of the working v0.3.1 Google Calendar integration.
 
-- Keeps the current Google OAuth access token in this browser so a normal page refresh can reconnect automatically while the token is still valid.
-- Automatically reloads the Perez Family calendar after refresh.
-- Clears an expired/rejected token and asks for Google reconnection when needed.
-- No Google client secret is included.
+## Chores
+- Add, edit, delete, assign, date, repeat label, and check off chores.
+- Chores are stored as specially tagged all-day events in the private Perez Family Google Calendar, so they sync across authorized devices without a separate database.
+- Chore records are hidden from the Family Hub Calendar view.
+- Meals and Lists remain placeholders.
 
-Important: Google access tokens are short-lived. v0.3.1 removes the unnecessary login after every refresh, but an expired Google session will still require Connect Google again.
+Google OAuth Client ID is public browser configuration; no client secret is included.
