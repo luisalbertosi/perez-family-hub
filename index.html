@@ -18,7 +18,7 @@ const CLIENT_ID='625809892764-9urcd7nrlodv7oqlb8vevsl3mt43ip7e.apps.googleuserco
 function saveToken(r){accessToken=r.access_token;let expiresAt=Date.now()+Math.max(0,(Number(r.expires_in)||3600)-60)*1000;localStorage.setItem(TOKEN_KEY,JSON.stringify({accessToken,expiresAt}))}
 function clearToken(){accessToken=null;localStorage.removeItem(TOKEN_KEY)}
 function restoreToken(){try{let x=JSON.parse(localStorage.getItem(TOKEN_KEY)||'null');if(x?.accessToken&&x?.expiresAt>Date.now()){accessToken=x.accessToken;return true}}catch{}clearToken();return false}
-function connectedUI(){\$('#googleSignIn').textContent='Reconnect Google';\$('#sync').hidden=false;\$('#add').disabled=false}
+function connectedUI(){$('#googleSignIn').textContent='Reconnect Google';$('#sync').hidden=false;$('#add').disabled=false}
 function status(x,b=false){$('#syncStatus').textContent=x;$('#syncStatus').style.color=b?'#b42318':'#777'}
 async function api(path,opt={}){let r=await fetch('https://www.googleapis.com/calendar/v3'+path,{...opt,headers:{Authorization:'Bearer '+accessToken,'Content-Type':'application/json'}});if(r.status===401){clearToken();$('#add').disabled=true;$('#sync').hidden=true;$('#googleSignIn').textContent='Connect Google';status('Google session expired — reconnect',true);throw Error('Google session expired')}if(!r.ok){let j=await r.json().catch(()=>({}));throw Error(j.error?.message||'Google Calendar error')}return r.status===204?null:r.json()}
 function fromGoogle(g){let ad=!!g.start.date;return{id:g.id,title:g.summary||'(Untitled)',person:g.extendedProperties?.shared?.pfhPerson||'FAMILY',date:ad?g.start.date:g.start.dateTime.slice(0,10),time:ad?'':g.start.dateTime.slice(11,16),end:ad?'':(g.end?.dateTime?.slice(11,16)||''),notes:g.description||''}}
