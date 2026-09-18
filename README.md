@@ -1,5 +1,6 @@
-# Perez Family Hub v0.2
+# Perez Family Hub v0.3
+Google Calendar connected build.
 
-Week, Month and Schedule views; touch-friendly event cards; human-friendly dates; Calendar/Chores/Meals/Lists navigation; local persistence; ready for future Google Calendar integration.
+Replace the existing GitHub Pages `index.html` and `manifest.json` with these files.
 
-MOM purple, DAD gray, MIGUEL yellow, FONSI blue, PRINCESS pink, FAMILY green.
+First test: open the live site, click Connect Google, authorize with a configured test-user account, verify Perez Family events load, then create/edit/delete one test event and confirm the changes in Google Calendar.
