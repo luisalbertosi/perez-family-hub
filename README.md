@@ -1,6 +1,10 @@
-# Perez Family Hub v0.3
-Google Calendar connected build.
+# Perez Family Hub v0.3.1
 
-Replace the existing GitHub Pages `index.html` and `manifest.json` with these files.
+Google Calendar persistence update.
 
-First test: open the live site, click Connect Google, authorize with a configured test-user account, verify Perez Family events load, then create/edit/delete one test event and confirm the changes in Google Calendar.
+- Keeps the current Google OAuth access token in this browser so a normal page refresh can reconnect automatically while the token is still valid.
+- Automatically reloads the Perez Family calendar after refresh.
+- Clears an expired/rejected token and asks for Google reconnection when needed.
+- No Google client secret is included.
+
+Important: Google access tokens are short-lived. v0.3.1 removes the unnecessary login after every refresh, but an expired Google session will still require Connect Google again.
