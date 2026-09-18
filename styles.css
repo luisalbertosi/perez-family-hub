@@ -10,3 +10,25 @@ main{max-width:1420px;margin:auto;padding:0 30px}.page{display:none}.page.active
 .bottomNav{position:fixed;z-index:20;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:12px;background:#fffffff2;backdrop-filter:blur(12px);padding:10px 16px;border-top:1px solid var(--line);box-shadow:0 -5px 18px #0000000c}.bottomNav button{min-width:155px;border:1px solid #e5e8ec;background:#fff;border-radius:15px;padding:12px 20px;font-size:17px;font-weight:850;box-shadow:0 2px 8px #0000000b}.bottomNav .active{background:#ece8ff;border-color:#cfc4ff;color:#412b96}
 .modal{position:fixed;z-index:50;inset:0;background:#26313a66;display:grid;place-items:center;padding:18px}.hidden{display:none!important}.modalCard{position:relative;width:min(620px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:22px;box-shadow:0 20px 70px #0004}.x{position:absolute;right:14px;top:10px;border:0;background:none;font-size:27px}.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:850}.field input,.field select,.field textarea{border:1px solid #d9d6d0;border-radius:9px;padding:10px;background:#fff}.formActions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;margin-top:8px}.danger{margin-right:auto;background:#fff0f0!important;color:#a33131!important;border:1px solid #f1caca!important}
 @media(max-width:850px){main{padding:0 12px}.topbar{padding:14px}.weekGrid{grid-template-columns:1fr}.day{min-height:100px}.lower{grid-template-columns:1fr}.bottomNav{gap:5px;padding:7px}.bottomNav button{min-width:0;flex:1;padding:10px 5px;font-size:13px}.bottomNav button span{display:block}.formGrid{grid-template-columns:1fr}.field.full,.formActions{grid-column:1}.clockbox #timeText{font-size:30px}}
+
+
+/* v0.7.1 — clearer separation between calendar views and family filters */
+.calendarControls{margin-top:8px}
+.calendarControlRow{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.viewTabs{padding:4px;background:#efebe6;border:1px solid #e6e0d9}
+.viewTabs button{min-width:86px;padding:10px 15px;font-size:15px}
+.viewTabs button.active{background:#fff;color:#382b76;box-shadow:0 2px 8px #00000012}
+.dateActions{display:flex;align-items:center;gap:8px}
+.dateActions .ghost{background:#fff;border:1px solid #e7e2dc;box-shadow:0 2px 7px #0000000a;cursor:pointer}
+.dateActions .arrowBtn{width:42px;padding-left:0;padding-right:0;font-size:20px}
+.familyFilterRow{display:flex;align-items:center;gap:10px;margin-top:13px;padding:10px 12px;background:#ffffffb8;border:1px solid #eee9e3;border-radius:14px}
+.filterLabel{font-size:12px;font-weight:850;color:#7a838b;text-transform:uppercase;letter-spacing:.45px}
+.familyFilterRow .filters{flex:none}
+.familyFilterRow .filter{padding:8px 13px}
+@media(max-width:850px){
+ .calendarControlRow{align-items:stretch;flex-direction:column}
+ .dateActions{justify-content:space-between}
+ .dateActions .primary{margin-left:auto}
+ .familyFilterRow{align-items:flex-start;overflow-x:auto}
+ .familyFilterRow .filters{flex-wrap:nowrap}
+}

@@ -10,18 +10,26 @@
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><h1>PEREZ FAMILY</h1><span>Family Hub v0.7</span></div>
+  <div class="brand"><h1>PEREZ FAMILY</h1><span>Family Hub v0.7.1</span></div>
   <div class="clockbox"><div id="dateText"></div><strong id="timeText"></strong><button id="connectionBtn" class="connection">Reconnect Google</button></div>
 </header>
 
 <main>
 <section id="calendarPage" class="page active">
-  <div class="toolbar">
-    <div class="segmented"><button data-view="week" class="active">Week</button><button data-view="month">Month</button><button data-view="schedule">Schedule</button></div>
-    <div class="filters" id="filters"></div>
-    <button id="todayBtn" class="ghost">Today</button>
-    <button id="prevBtn" class="ghost">‹</button><button id="nextBtn" class="ghost">›</button>
-    <button id="addEventBtn" class="primary">+ Add Event</button>
+  <div class="calendarControls">
+    <div class="calendarControlRow">
+      <div class="segmented viewTabs"><button data-view="week" class="active">Week</button><button data-view="month">Month</button><button data-view="schedule">Schedule</button></div>
+      <div class="dateActions">
+        <button id="todayBtn" class="ghost">Today</button>
+        <button id="prevBtn" class="ghost arrowBtn" aria-label="Previous">‹</button>
+        <button id="nextBtn" class="ghost arrowBtn" aria-label="Next">›</button>
+        <button id="addEventBtn" class="primary">+ Add Event</button>
+      </div>
+    </div>
+    <div class="familyFilterRow">
+      <span class="filterLabel">Show:</span>
+      <div class="filters" id="filters"></div>
+    </div>
   </div>
   <div id="calendarTitle" class="sectionTitle"></div>
   <div id="calendarGrid"></div>
