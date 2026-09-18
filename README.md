@@ -1,11 +1,7 @@
-# Perez Family Hub v0.5
+# Perez Family Hub v0.5.1
 
-Changes:
-- Week view starts on Monday and ends on Sunday.
-- More colorful pastel event presentation.
-- Compact avatar/assignment badges on event cards.
-- Selecting a Start time automatically proposes an End time one hour later.
-- Keeps Google Calendar sync, compact Connected status, Chores, Meals and Lists navigation from v0.4.1.
-- Today is excluded from Coming Next.
-
-Upload index.html, manifest.json and README.md to the root of the existing GitHub Pages repository.
+Changes from v0.5:
+- More prominent top-right date.
+- Significantly larger/bolder live time for at-a-glance viewing.
+- Compact green Connected status remains directly underneath.
+- All v0.5 calendar, Google sync, Monday-start week, colorful events, avatars, chores, and one-hour default end-time behavior retained.
