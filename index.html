@@ -64,7 +64,37 @@ body{background:linear-gradient(135deg,#faf8f4 0%,#f7fbff 55%,#faf7ff 100%)!impo
 }
 </style>
 
-</head><body><div class="app"><header><div class="brand"><h1>PEREZ FAMILY</h1><p>Family Hub <small>v0.5.2</small></p></div><div class="clock"><div id="clock"></div><div class="conn" id="conn"><button class="connbtn" id="googleSignIn">Connect Google</button></div></div></header><div class="people" id="people"></div>
+
+<style id="v06-chores">
+.chore-v06-wrap{padding:4px 0 90px}
+.chore-v06-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 18px}
+.chore-v06-title{font-size:28px;font-weight:850;letter-spacing:-.5px}
+.chore-v06-sub{font-size:13px;color:#75808a;margin-top:3px}
+.chore-v06-stats{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.chore-v06-stat{background:#fff;border:1px solid #e8e4de;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:750}
+.chore-v06-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.chore-v06-card{background:#fff;border:1px solid #e8e4de;border-left:6px solid #48a86d;border-radius:15px;padding:14px;box-shadow:0 3px 12px rgba(30,45,65,.06)}
+.chore-v06-card.done{opacity:.58}
+.chore-v06-top{display:flex;align-items:flex-start;gap:10px}
+.chore-v06-check{width:29px;height:29px;border-radius:50%;border:2px solid #cfd6dc;background:#fff;display:grid;place-items:center;font-size:17px;cursor:pointer;flex:0 0 29px}
+.chore-v06-card.done .chore-v06-check{background:#48a86d;border-color:#48a86d;color:#fff}
+.chore-v06-main{min-width:0;flex:1}
+.chore-v06-name{font-size:17px;font-weight:850;line-height:1.2}
+.chore-v06-card.done .chore-v06-name{text-decoration:line-through}
+.chore-v06-meta{font-size:12px;color:#75808a;margin-top:5px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.chore-v06-person{font-weight:800}
+.chore-v06-repeat{background:#f3f0eb;border-radius:999px;padding:3px 7px;font-weight:700}
+.chore-v06-actions{display:flex;gap:6px;margin-top:11px}
+.chore-v06-actions button{font-size:12px;padding:6px 9px;border-radius:8px}
+.chore-v06-empty{grid-column:1/-1;text-align:center;background:#fff;border:1px dashed #d9d3ca;border-radius:16px;padding:36px 18px;color:#75808a}
+.chore-v06-note{font-size:12px;color:#65717c;margin-top:8px}
+.chore-v06-history{margin-top:20px;background:#fff;border:1px solid #e8e4de;border-radius:15px;padding:14px}
+.chore-v06-history summary{cursor:pointer;font-weight:800}
+.chore-v06-history-row{font-size:12px;padding:7px 0;border-bottom:1px solid #f0ede8;color:#66727d}
+.chore-v06-history-row:last-child{border-bottom:0}
+</style>
+
+</head><body><div class="app"><header><div class="brand"><h1>PEREZ FAMILY</h1><p>Family Hub <small>v0.6</small></p></div><div class="clock"><div id="clock"></div><div class="conn" id="conn"><button class="connbtn" id="googleSignIn">Connect Google</button></div></div></header><div class="people" id="people"></div>
 <section id="calendarPage"><div class="toolbar"><div class="left"><button class="btn" id="prev">‹ Previous</button><button class="btn" id="today">Today</button><button class="btn" id="next">Next ›</button></div><div class="views"><button class="btn active" data-view="week">Week</button><button class="btn" data-view="month">Month</button><button class="btn" data-view="schedule">Schedule</button></div><div class="left"><button class="btn primary" id="add" disabled>＋ Add Event</button></div></div><div class="weektitle" id="range"></div><main id="content"></main><div class="panels"><div class="panel"><h2>Today</h2><div id="todayList"></div></div><div class="panel"><h2>Coming Next</h2><div id="nextList"></div></div></div></section><section id="otherPage" hidden></section></div>
 <nav class="bottom"><button class="nav active" data-page="Calendar">▣ Calendar</button><button class="nav" data-page="Chores">✓ Chores</button><button class="nav" data-page="Meals">⌂ Meals</button><button class="nav" data-page="Lists">☷ Lists</button></nav>
 <dialog id="dlg"><form class="modal" id="form"><h2 id="modalTitle">Add Event</h2><input type="hidden" id="eid"><div class="field"><label>Event</label><input id="title" required></div><div class="grid2"><div class="field"><label>Person</label><select id="person"></select></div><div class="field"><label>Date</label><input id="date" type="date" required></div></div><div class="grid2"><div class="field"><label>Start time</label><input id="time" type="time"></div><div class="field"><label>End time</label><input id="end" type="time"></div></div><div class="field"><label>Notes</label><textarea id="notes"></textarea></div><div class="actions"><button type="button" class="btn danger" id="del" hidden>Delete</button><div><button type="button" class="btn" id="cancel">Cancel</button> <button class="btn primary">Save Event</button></div></div></form></dialog>
@@ -149,6 +179,93 @@ $('#del').onclick=async()=>{let id=$('#eid').value;if(confirm('Delete this event
   }
   new MutationObserver(decorate).observe(document.documentElement,{subtree:true,childList:true});
   document.addEventListener("DOMContentLoaded",decorate);
+})();
+</script>
+
+
+<script id="v06-chore-engine">
+(function(){
+  const HISTORY_KEY="pfh-chore-history-v06";
+  function history(){
+    try{return JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]")}catch(e){return[]}
+  }
+  function saveHistory(h){
+    localStorage.setItem(HISTORY_KEY,JSON.stringify(h.slice(-300)));
+  }
+  function isoDate(d){
+    const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${day}`;
+  }
+  function addRepeat(dateStr,repeat){
+    const d=new Date(dateStr+"T12:00:00");
+    const r=(repeat||"").toLowerCase();
+    if(r==="daily") d.setDate(d.getDate()+1);
+    else if(r==="weekly") d.setDate(d.getDate()+7);
+    else if(r==="monthly") d.setMonth(d.getMonth()+1);
+    else return null;
+    return isoDate(d);
+  }
+  window.pfhV06RecordCompletion=function(chore){
+    const h=history();
+    h.push({
+      id:chore.id||"",
+      title:chore.title||chore.summary||"Chore",
+      person:chore.person||"FAMILY",
+      due:chore.date||chore.due||"",
+      completedAt:new Date().toISOString()
+    });
+    saveHistory(h);
+  };
+  window.pfhV06NextDate=function(dateStr,repeat){return addRepeat(dateStr,repeat)};
+  window.pfhV06History=history;
+
+  // Upgrade existing chore cards after every render without replacing the existing Google sync engine.
+  function enhanceCards(){
+    document.querySelectorAll('[data-chore-id],.chore-card,.chore').forEach(card=>{
+      if(card.dataset.v06Enhanced) return;
+      card.dataset.v06Enhanced="1";
+      card.classList.add("chore-v06-card");
+    });
+  }
+  new MutationObserver(enhanceCards).observe(document.documentElement,{subtree:true,childList:true});
+  document.addEventListener("DOMContentLoaded",enhanceCards);
+})();
+</script>
+
+
+<script id="v06-chore-recurrence-wrapper">
+(function(){
+  function install(){
+    if(typeof window.toggleChore!=="function" || window.toggleChore.__v06) return;
+    const original=window.toggleChore;
+    const wrapped=async function(id){
+      let c=null;
+      try{
+        if(Array.isArray(window.chores)) c=window.chores.find(x=>String(x.id)===String(id));
+      }catch(e){}
+      const wasDone=!!(c&&c.done);
+      const result=await original.apply(this,arguments);
+      if(c && !wasDone){
+        try{ window.pfhV06RecordCompletion(c); }catch(e){}
+        const next=window.pfhV06NextDate(c.date||c.due,c.repeat);
+        if(next){
+          // Advance the same recurring chore to its next occurrence after completion.
+          // Existing Google update logic remains source of truth when available.
+          c.date=next;c.due=next;c.done=false;
+          try{
+            if(typeof window.saveChore==="function") await window.saveChore(c,true);
+            else if(typeof window.updateChore==="function") await window.updateChore(c,true);
+          }catch(e){ console.warn("v0.6 recurrence advance deferred to next sync",e); }
+          try{ if(typeof window.renderChores==="function") window.renderChores(); }catch(e){}
+        }
+      }
+      return result;
+    };
+    wrapped.__v06=true;
+    window.toggleChore=wrapped;
+  }
+  document.addEventListener("DOMContentLoaded",()=>setTimeout(install,0));
+  setTimeout(install,500);
 })();
 </script>
 
