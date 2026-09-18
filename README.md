@@ -1,12 +1,18 @@
-# Perez Family Hub v0.7.1
+# Perez Family Hub v0.7.2
 
-Layout refinement built directly from the clean v0.7 rewrite.
+Chore recurrence reliability rewrite.
 
-Changes:
-- Week / Month / Schedule are now a distinct calendar-view row.
-- Today / previous / next / Add Event remain grouped on the right.
-- Family member filters now have their own separate row underneath.
-- Added a subtle "Show:" label so family pills clearly read as filters.
-- No Calendar, Google sync, Add Event, Chores, recurrence, Meals, Lists, or storage logic was changed.
+What changed:
+- Rewrote chores.js rather than patching the prior toggle function.
+- A completion snapshots the exact clicked Google event ID before any async work.
+- Only that exact event URL is PATCHed.
+- Other chores are never looped over, recalculated, or updated during completion.
+- Prevents double-clicks while a chore update is in progress.
+- App-wide sync now performs one Google Calendar list fetch and gives the same result to Calendar and Chores.
+- Preserves v0.7.1 layout, Add Event, Add Chore, family colors, Monday-first week, and prominent bottom navigation.
 
-Upload all files in this ZIP to the repository root, replacing the v0.7 files.
+Test:
+1. Note both chore dates.
+2. Click only Fonsi's chore once.
+3. Fonsi's weekly chore should move exactly 7 days.
+4. Miguel's date must remain unchanged.
