@@ -1,7 +1,6 @@
-# Perez Family Hub v0.5.1
+# Perez Family Hub v0.5.2
 
-Changes from v0.5:
-- More prominent top-right date.
-- Significantly larger/bolder live time for at-a-glance viewing.
-- Compact green Connected status remains directly underneath.
-- All v0.5 calendar, Google sync, Monday-start week, colorful events, avatars, chores, and one-hour default end-time behavior retained.
+- Correctly targets the app's real `#clock` markup.
+- Larger/bolder date and substantially larger live time.
+- Compact connection status remains directly underneath.
+- Retains all v0.5 functionality.

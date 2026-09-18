@@ -34,34 +34,37 @@ body{background:linear-gradient(135deg,#faf8f4 0%,#f7fbff 55%,#faf7ff 100%)!impo
 </style>
 
 
-<style id="v051-clock-prominence">
-/* v0.5.1 — more glanceable date/time */
-#dateDisplay, .date-display, #currentDate, .current-date, .header-date {
-  font-size: 20px !important;
-  font-weight: 700 !important;
-  line-height: 1.15 !important;
-  letter-spacing: -0.2px !important;
+<style id="v052-clock-prominence">
+#clock{
+  font-size:20px !important;
+  font-weight:750 !important;
+  line-height:1.15 !important;
+  text-align:right !important;
+  letter-spacing:-0.2px !important;
 }
-#timeDisplay, .time-display, #currentTime, .current-time, .header-time {
-  font-size: 34px !important;
-  font-weight: 850 !important;
-  line-height: 1.05 !important;
-  letter-spacing: -0.8px !important;
-  margin-top: 3px !important;
+#clock b{
+  display:block !important;
+  font-size:36px !important;
+  font-weight:850 !important;
+  line-height:1.02 !important;
+  letter-spacing:-0.8px !important;
+  margin-top:5px !important;
 }
-#googleStatus, .google-status {
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  color: #249653 !important;
-  margin-top: 5px !important;
+#conn{
+  margin-top:5px !important;
+  font-size:13px !important;
 }
-@media (max-width: 900px) {
-  #dateDisplay, .date-display, #currentDate, .current-date, .header-date {font-size:18px !important;}
-  #timeDisplay, .time-display, #currentTime, .current-time, .header-time {font-size:30px !important;}
+#conn .connbtn{
+  font-size:13px !important;
+  padding:2px 5px !important;
+}
+@media(max-width:900px){
+  #clock{font-size:18px !important;}
+  #clock b{font-size:31px !important;}
 }
 </style>
 
-</head><body><div class="app"><header><div class="brand"><h1>PEREZ FAMILY</h1><p>Family Hub <small>v0.5</small></p></div><div class="clock"><div id="clock"></div><div class="conn" id="conn"><button class="connbtn" id="googleSignIn">Connect Google</button></div></div></header><div class="people" id="people"></div>
+</head><body><div class="app"><header><div class="brand"><h1>PEREZ FAMILY</h1><p>Family Hub <small>v0.5.2</small></p></div><div class="clock"><div id="clock"></div><div class="conn" id="conn"><button class="connbtn" id="googleSignIn">Connect Google</button></div></div></header><div class="people" id="people"></div>
 <section id="calendarPage"><div class="toolbar"><div class="left"><button class="btn" id="prev">‹ Previous</button><button class="btn" id="today">Today</button><button class="btn" id="next">Next ›</button></div><div class="views"><button class="btn active" data-view="week">Week</button><button class="btn" data-view="month">Month</button><button class="btn" data-view="schedule">Schedule</button></div><div class="left"><button class="btn primary" id="add" disabled>＋ Add Event</button></div></div><div class="weektitle" id="range"></div><main id="content"></main><div class="panels"><div class="panel"><h2>Today</h2><div id="todayList"></div></div><div class="panel"><h2>Coming Next</h2><div id="nextList"></div></div></div></section><section id="otherPage" hidden></section></div>
 <nav class="bottom"><button class="nav active" data-page="Calendar">▣ Calendar</button><button class="nav" data-page="Chores">✓ Chores</button><button class="nav" data-page="Meals">⌂ Meals</button><button class="nav" data-page="Lists">☷ Lists</button></nav>
 <dialog id="dlg"><form class="modal" id="form"><h2 id="modalTitle">Add Event</h2><input type="hidden" id="eid"><div class="field"><label>Event</label><input id="title" required></div><div class="grid2"><div class="field"><label>Person</label><select id="person"></select></div><div class="field"><label>Date</label><input id="date" type="date" required></div></div><div class="grid2"><div class="field"><label>Start time</label><input id="time" type="time"></div><div class="field"><label>End time</label><input id="end" type="time"></div></div><div class="field"><label>Notes</label><textarea id="notes"></textarea></div><div class="actions"><button type="button" class="btn danger" id="del" hidden>Delete</button><div><button type="button" class="btn" id="cancel">Cancel</button> <button class="btn primary">Save Event</button></div></div></form></dialog>
