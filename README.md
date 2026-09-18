@@ -1,13 +1,10 @@
-# Perez Family Hub v0.6
+# Perez Family Hub v0.6.1
 
-## Chores upgrade
-- Keeps the existing Google Calendar-backed chores system.
-- Adds a completion-history store on the device for recent completed chores.
-- Adds recurrence progression helpers for Daily, Weekly and Monthly chores.
-- When the existing chore toggle is available globally, completing a recurring chore advances it to its next due date and resets it to open.
-- Adds improved chore-card styling and completed-state presentation.
-- One-time chores remain completed rather than generating another occurrence.
-- Existing Calendar design, Monday-first week, family colors/badges, compact Google connection status and one-hour event duration default remain intact.
-
-### Important architecture note
-Chores are still represented as specially tagged events in the private Perez Family Google Calendar in this version. A future database-backed architecture can move chores, meals and lists out of Calendar if desired.
+Fixes and improvements:
+- Recurring chore completion is now integrated directly into the real chore toggle function.
+- Completing Daily / Weekly / Monthly chores advances the same Google-backed chore to its next due date and resets it open.
+- One-time chores still toggle to Done normally.
+- Completion history is recorded locally on the device.
+- Expired Google sessions now show a clearer reconnect instruction.
+- Calendar / Chores / Meals / Lists bottom navigation is larger, higher contrast, and easier to notice/tap.
+- Existing Calendar v0.5.x features remain intact.

@@ -94,7 +94,42 @@ body{background:linear-gradient(135deg,#faf8f4 0%,#f7fbff 55%,#faf7ff 100%)!impo
 .chore-v06-history-row:last-child{border-bottom:0}
 </style>
 
-</head><body><div class="app"><header><div class="brand"><h1>PEREZ FAMILY</h1><p>Family Hub <small>v0.6</small></p></div><div class="clock"><div id="clock"></div><div class="conn" id="conn"><button class="connbtn" id="googleSignIn">Connect Google</button></div></div></header><div class="people" id="people"></div>
+
+<style id="v061-navigation">
+.bottom{
+  gap:12px !important;
+  padding:10px 18px !important;
+  background:rgba(255,255,255,.96) !important;
+  box-shadow:0 -5px 20px rgba(35,45,60,.08) !important;
+}
+.bottom .nav{
+  min-width:150px !important;
+  min-height:58px !important;
+  padding:12px 22px !important;
+  border-radius:15px !important;
+  font-size:17px !important;
+  font-weight:800 !important;
+  border:1px solid #e5e8ec !important;
+  background:#fff !important;
+  box-shadow:0 2px 8px rgba(30,45,65,.06) !important;
+}
+.bottom .nav.active{
+  background:#ece8ff !important;
+  border-color:#cfc4ff !important;
+  color:#3f2a94 !important;
+  box-shadow:0 3px 12px rgba(90,65,180,.12) !important;
+}
+.bottom .nav[data-page="Calendar"]{border-bottom:4px solid #3187cf !important}
+.bottom .nav[data-page="Chores"]{border-bottom:4px solid #8b5cf6 !important}
+.bottom .nav[data-page="Meals"]{border-bottom:4px solid #f4a62a !important}
+.bottom .nav[data-page="Lists"]{border-bottom:4px solid #48a86d !important}
+@media(max-width:760px){
+ .bottom{gap:6px!important;padding:7px 8px!important}
+ .bottom .nav{min-width:0!important;flex:1!important;padding:10px 6px!important;font-size:14px!important}
+}
+</style>
+
+</head><body><div class="app"><header><div class="brand"><h1>PEREZ FAMILY</h1><p>Family Hub <small>v0.6.1</small></p></div><div class="clock"><div id="clock"></div><div class="conn" id="conn"><button class="connbtn" id="googleSignIn">Connect Google</button></div></div></header><div class="people" id="people"></div>
 <section id="calendarPage"><div class="toolbar"><div class="left"><button class="btn" id="prev">‹ Previous</button><button class="btn" id="today">Today</button><button class="btn" id="next">Next ›</button></div><div class="views"><button class="btn active" data-view="week">Week</button><button class="btn" data-view="month">Month</button><button class="btn" data-view="schedule">Schedule</button></div><div class="left"><button class="btn primary" id="add" disabled>＋ Add Event</button></div></div><div class="weektitle" id="range"></div><main id="content"></main><div class="panels"><div class="panel"><h2>Today</h2><div id="todayList"></div></div><div class="panel"><h2>Coming Next</h2><div id="nextList"></div></div></div></section><section id="otherPage" hidden></section></div>
 <nav class="bottom"><button class="nav active" data-page="Calendar">▣ Calendar</button><button class="nav" data-page="Chores">✓ Chores</button><button class="nav" data-page="Meals">⌂ Meals</button><button class="nav" data-page="Lists">☷ Lists</button></nav>
 <dialog id="dlg"><form class="modal" id="form"><h2 id="modalTitle">Add Event</h2><input type="hidden" id="eid"><div class="field"><label>Event</label><input id="title" required></div><div class="grid2"><div class="field"><label>Person</label><select id="person"></select></div><div class="field"><label>Date</label><input id="date" type="date" required></div></div><div class="grid2"><div class="field"><label>Start time</label><input id="time" type="time"></div><div class="field"><label>End time</label><input id="end" type="time"></div></div><div class="field"><label>Notes</label><textarea id="notes"></textarea></div><div class="actions"><button type="button" class="btn danger" id="del" hidden>Delete</button><div><button type="button" class="btn" id="cancel">Cancel</button> <button class="btn primary">Save Event</button></div></div></form></dialog>
@@ -123,7 +158,43 @@ function renderChores(){let box=$('#otherPage');let sorted=[...chores].sort((a,b
 function esc(x){return String(x||'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]))}
 function openNewChore(){$('#cid').value='';$('#ctitleInput').value='';$('#cperson').value='FAMILY';$('#cdate').value=ymd(new Date());$('#crepeat').value='none';$('#cnotes').value='';$('#cdel').hidden=true;$('#choreModalTitle').textContent='Add Chore';$('#choreDlg').showModal()}
 function editChore(id){let c=chores.find(x=>String(x.id)===String(id));if(!c)return;$('#cid').value=c.id;$('#ctitleInput').value=c.title;$('#cperson').value=c.person;$('#cdate').value=c.date;$('#crepeat').value=c.repeat||'none';$('#cnotes').value=c.notes||'';$('#cdel').hidden=false;$('#choreModalTitle').textContent='Edit Chore';$('#choreDlg').showModal()}
-async function toggleChore(id){let c=chores.find(x=>String(x.id)===String(id));if(!c)return;try{await api('/calendars/'+encodeURIComponent(CALENDAR_ID)+'/events/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({extendedProperties:{shared:{pfhType:'chore',pfhPerson:c.person,pfhDone:String(!c.done),pfhRepeat:c.repeat||'none'}}})});await syncGoogle()}catch(x){alert(x.message)}}
+async function toggleChore(id){
+ let c=chores.find(x=>String(x.id)===String(id));if(!c)return;
+ try{
+   let turningDone=!c.done, repeat=c.repeat||'none';
+   if(turningDone && repeat!=='none'){
+     // Record this completed occurrence locally, then advance the SAME Google-backed chore.
+     try{window.pfhV06RecordCompletion?.(c)}catch(e){}
+     let next=window.pfhV06NextDate?.(c.date,repeat);
+     if(!next)throw Error('Could not calculate the next chore date');
+     let z=parse(next);z.setDate(z.getDate()+1);
+     await api('/calendars/'+encodeURIComponent(CALENDAR_ID)+'/events/'+encodeURIComponent(id),{
+       method:'PATCH',
+       body:JSON.stringify({
+         start:{date:next},
+         end:{date:ymd(z)},
+         extendedProperties:{shared:{
+           pfhType:'chore',pfhPerson:c.person,pfhDone:'false',pfhRepeat:repeat
+         }}
+       })
+     });
+   }else{
+     // One-time chores toggle done/open normally. Recurring chores can also be reopened if needed.
+     await api('/calendars/'+encodeURIComponent(CALENDAR_ID)+'/events/'+encodeURIComponent(id),{
+       method:'PATCH',
+       body:JSON.stringify({extendedProperties:{shared:{
+         pfhType:'chore',pfhPerson:c.person,pfhDone:String(turningDone),pfhRepeat:repeat
+       }}})
+     });
+     if(turningDone){try{window.pfhV06RecordCompletion?.(c)}catch(e){}}
+   }
+   await syncGoogle();
+ }catch(x){
+   if(String(x.message||'').includes('session expired')){
+     alert('Your Google connection expired. Tap Reconnect Google / Connected at the top, reconnect, then mark the chore done again.');
+   }else alert(x.message);
+ }
+}
 function body(){let d=$('#date').value,t=$('#time').value,en=$('#end').value,o={summary:$('#title').value.trim(),description:$('#notes').value,extendedProperties:{shared:{pfhPerson:$('#person').value}}};if(!t){o.start={date:d};let z=parse(d);z.setDate(z.getDate()+1);o.end={date:ymd(z)}}else{let tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'America/Los_Angeles';o.start={dateTime:d+'T'+t+':00',timeZone:tz};if(!en){let z=new Date(d+'T'+t+':00');z.setHours(z.getHours()+1);en=pad(z.getHours())+':'+pad(z.getMinutes())}o.end={dateTime:d+'T'+en+':00',timeZone:tz}}return o}
 function initGoogle(){if(!window.google?.accounts?.oauth2)return setTimeout(initGoogle,300);tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPE,callback:r=>{if(r.error)return status('Google sign-in failed',true);saveToken(r);connectedUI();syncGoogle()}});if(restoreToken()){connectedUI();status('Restoring Google Calendar…');syncGoogle()}}
 $('#googleSignIn').onclick=()=>{if(accessToken)syncGoogle();else tokenClient?.requestAccessToken({prompt:'consent'})};
@@ -231,42 +302,4 @@ $('#del').onclick=async()=>{let id=$('#eid').value;if(confirm('Delete this event
   document.addEventListener("DOMContentLoaded",enhanceCards);
 })();
 </script>
-
-
-<script id="v06-chore-recurrence-wrapper">
-(function(){
-  function install(){
-    if(typeof window.toggleChore!=="function" || window.toggleChore.__v06) return;
-    const original=window.toggleChore;
-    const wrapped=async function(id){
-      let c=null;
-      try{
-        if(Array.isArray(window.chores)) c=window.chores.find(x=>String(x.id)===String(id));
-      }catch(e){}
-      const wasDone=!!(c&&c.done);
-      const result=await original.apply(this,arguments);
-      if(c && !wasDone){
-        try{ window.pfhV06RecordCompletion(c); }catch(e){}
-        const next=window.pfhV06NextDate(c.date||c.due,c.repeat);
-        if(next){
-          // Advance the same recurring chore to its next occurrence after completion.
-          // Existing Google update logic remains source of truth when available.
-          c.date=next;c.due=next;c.done=false;
-          try{
-            if(typeof window.saveChore==="function") await window.saveChore(c,true);
-            else if(typeof window.updateChore==="function") await window.updateChore(c,true);
-          }catch(e){ console.warn("v0.6 recurrence advance deferred to next sync",e); }
-          try{ if(typeof window.renderChores==="function") window.renderChores(); }catch(e){}
-        }
-      }
-      return result;
-    };
-    wrapped.__v06=true;
-    window.toggleChore=wrapped;
-  }
-  document.addEventListener("DOMContentLoaded",()=>setTimeout(install,0));
-  setTimeout(install,500);
-})();
-</script>
-
 </body></html>
