@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><h1>PEREZ FAMILY</h1><span>Family Hub v0.7.2</span></div>
+  <div class="brand"><h1>PEREZ FAMILY</h1><span>Family Hub v0.8</span></div>
   <div class="clockbox"><div id="dateText"></div><strong id="timeText"></strong><button id="connectionBtn" class="connection">Reconnect Google</button></div>
 </header>
 
@@ -43,7 +43,7 @@
   <div class="pageHead"><div><h2>Chores</h2><p>Shared family chores with recurring due dates.</p></div><button id="addChoreBtn" class="primary">+ Add Chore</button></div>
   <div id="choreStats" class="stats"></div><div id="choreList" class="choreGrid"></div>
 </section>
-<section id="mealsPage" class="page placeholder"><h2>Meals</h2><p>Weekly meal planning is coming next.</p></section>
+<section id="mealsPage" class="page"><div class="pageHead"><div><h2>Meals</h2><p>Plan the family's week at a glance.</p></div><button id="addMealBtn" class="primary">+ Add Meal</button></div><div class="mealToolbar"><button id="mealPrevBtn" class="ghost">‹ Previous Week</button><button id="mealTodayBtn" class="ghost">This Week</button><button id="mealNextBtn" class="ghost">Next Week ›</button><strong id="mealWeekTitle"></strong></div><div id="mealGrid" class="mealGrid"></div></section>
 <section id="listsPage" class="page placeholder"><h2>Lists</h2><p>Shared grocery and family lists are coming next.</p></section>
 </main>
 
@@ -66,5 +66,6 @@
 <script src="google-calendar.js"></script>
 <script src="calendar.js"></script>
 <script src="chores.js"></script>
+<script src="meals.js"></script>
 <script src="app.js"></script>
 </body></html>
