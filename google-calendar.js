@@ -8,5 +8,6 @@ window.PFHGoogle=(function(){
  async function api(path,opt={}){if(!accessToken)throw Error("Google is not connected");const r=await fetch("https://www.googleapis.com/calendar/v3"+path,{...opt,headers:{Authorization:"Bearer "+accessToken,"Content-Type":"application/json",...(opt.headers||{})}});if(r.status===401){accessToken=null;PFHStorage.clearToken();window.dispatchEvent(new Event("pfh-auth"));throw Error("Google session expired. Reconnect Google.")}if(!r.ok){let t=await r.text();throw Error("Google Calendar error "+r.status+": "+t)}return r.status===204?null:r.json()}
  async function list(){let a=new Date();a.setMonth(a.getMonth()-3);let b=new Date();b.setMonth(b.getMonth()+15);let base="/calendars/"+encodeURIComponent(CALENDAR_ID)+"/events";let q=`?singleEvents=true&showDeleted=false&maxResults=2500&timeMin=${encodeURIComponent(a.toISOString())}&timeMax=${encodeURIComponent(b.toISOString())}&orderBy=startTime`;let main=(await api(base+q)).items||[];let extras=[];for(const type of ["list","recipe"]){let x=(await api(base+`?singleEvents=true&showDeleted=false&maxResults=2500&sharedExtendedProperty=${encodeURIComponent("pfhType="+type)}`)).items||[];extras.push(...x)}let map=new Map();[...main,...extras].forEach(x=>map.set(String(x.id),x));return [...map.values()]}
  function isConnected(){return !!accessToken}
- return {init,connect,api,list,isConnected,CALENDAR_ID};
+ function getAccessToken(){return accessToken}
+ return {init,connect,api,list,isConnected,getAccessToken,CALENDAR_ID};
 })();

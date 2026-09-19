@@ -1,14 +1,12 @@
-# Perez Family Hub v0.11
+# Perez Family Hub v0.12
 
-Meals + Recipes upgrade:
-- Weekly meal planner preserved
-- Shared family recipe library
-- Add/edit/delete recipes with ingredients, instructions, time, tags and source URL
-- Best-effort recipe URL import using standard Recipe JSON-LD when the source site permits browser access
-- Pick a saved recipe while scheduling a meal
-- Quick meal choices: Leftovers, Eating Out, Takeout
-- Add all saved-recipe ingredients from the visible week to the shared Grocery list
-- Recipe and list records remain hidden from the normal calendar
-- Persistent list/recipe retrieval independent of their original creation date
+Firestore migration release:
+- Calendar events remain in Google Calendar.
+- Chores remain in Google Calendar so chore indicators continue to work.
+- Meals, Recipes, and Lists now save in Cloud Firestore instead of creating Google Calendar events.
+- Existing v0.11 meal/list/recipe storage events can be migrated on first sync. The app asks before copying them to Firestore and removing only those tagged storage records from Google Calendar.
+- New recipes default Prep + cook time to 30 minutes.
+- Firebase Authentication reuses the existing Google access token, so there is no second family login flow when the Google connection is active.
 
-Recipe URL import is best-effort because many recipe websites block cross-origin browser fetching. When blocked, Family Hub keeps the URL and opens the recipe editor for manual completion.
+Firebase project: perez-family-hub-509018
+Firestore rules must allow authenticated users to read/write.

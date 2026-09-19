@@ -7,10 +7,13 @@
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="styles.css">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><h1>PEREZ FAMILY</h1><span>Family Hub v0.11</span></div>
+  <div class="brand"><h1>PEREZ FAMILY</h1><span>Family Hub v0.12</span></div>
   <div class="headerRight"><div id="weatherBox" class="weatherBox"><span class="weatherIcon">☁️</span><span><strong id="weatherTemp">--°</strong><small id="weatherForecast">Weather loading…</small></span></div><div class="clockbox"><div id="dateText"></div><strong id="timeText"></strong><button id="connectionBtn" class="connection">Reconnect Google</button></div></div>
 </header>
 
@@ -75,6 +78,7 @@
 
 <script src="storage.js"></script>
 <script src="google-calendar.js"></script>
+<script src="firebase.js"></script>
 <script src="calendar.js"></script>
 <script src="weather.js"></script>
 <script src="chores.js"></script>
