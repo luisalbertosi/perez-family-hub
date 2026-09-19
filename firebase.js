@@ -1,5 +1,5 @@
 window.PFHFirebase=(function(){
- const CONFIG={apiKey:"AIzaSyCmyayR7_veaP62Y387Z46FcvzqyQBi297w",authDomain:"perez-family-hub-509018.firebaseapp.com",projectId:"perez-family-hub-509018",storageBucket:"perez-family-hub-509018.firebasestorage.app",messagingSenderId:"625809892764",appId:"1:625809892764:web:52ce6ff926a7737aff1459"};
+ const CONFIG={apiKey:"AIzaSyCmyayR7_veaP62Y38Z46FcvzqyQBi297w",authDomain:"perez-family-hub-509018.firebaseapp.com",projectId:"perez-family-hub-509018",storageBucket:"perez-family-hub-509018.firebasestorage.app",messagingSenderId:"625809892764",appId:"1:625809892764:web:52ce6ff926a7737aff1459"};
  let db=null,auth=null;
  function init(){if(!window.firebase)throw Error("Firebase SDK did not load");if(!firebase.apps.length)firebase.initializeApp(CONFIG);db=firebase.firestore();auth=firebase.auth();auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});}
  async function ensureAuth(){if(!auth)init();if(auth.currentUser)return auth.currentUser;const token=PFHGoogle.getAccessToken();if(!token)throw Error("Connect Google first.");const credential=firebase.auth.GoogleAuthProvider.credential(null,token);const r=await auth.signInWithCredential(credential);return r.user;}
