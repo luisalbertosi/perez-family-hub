@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><h1>PEREZ FAMILY</h1><span>Family Hub v0.10.1</span></div>
+  <div class="brand"><h1>PEREZ FAMILY</h1><span>Family Hub v0.11</span></div>
   <div class="headerRight"><div id="weatherBox" class="weatherBox"><span class="weatherIcon">☁️</span><span><strong id="weatherTemp">--°</strong><small id="weatherForecast">Weather loading…</small></span></div><div class="clockbox"><div id="dateText"></div><strong id="timeText"></strong><button id="connectionBtn" class="connection">Reconnect Google</button></div></div>
 </header>
 
@@ -43,7 +43,11 @@
   <div class="pageHead"><div><h2>Chores</h2><p>Shared family chores with recurring due dates.</p></div><button id="addChoreBtn" class="primary">+ Add Chore</button></div>
   <div id="choreStats" class="stats"></div><div id="choreList" class="choreGrid"></div>
 </section>
-<section id="mealsPage" class="page"><div class="pageHead"><div><h2>Meals</h2><p>Plan the family's week at a glance.</p></div><button id="addMealBtn" class="primary">+ Add Meal</button></div><div class="mealToolbar"><button id="mealPrevBtn" class="ghost">‹ Previous Week</button><button id="mealTodayBtn" class="ghost">This Week</button><button id="mealNextBtn" class="ghost">Next Week ›</button><strong id="mealWeekTitle"></strong></div><div id="mealGrid" class="mealGrid"></div></section>
+<section id="mealsPage" class="page">
+<div class="pageHead mealPageHead"><div><h2>Meals</h2><p>Plan meals, save family recipes, and build the grocery list.</p></div><div class="mealHeadActions"><div class="segmented mealViews"><button data-meal-view="planner" class="active">Week Planner</button><button data-meal-view="recipes">Recipes</button></div><button id="addMealBtn" class="primary">+ Add Meal</button></div></div>
+<div id="mealPlannerView"><div class="mealToolbar"><button id="mealPrevBtn" class="ghost">‹ Previous Week</button><button id="mealTodayBtn" class="ghost">This Week</button><button id="mealNextBtn" class="ghost">Next Week ›</button><button id="addWeekGroceryBtn" class="groceryBtn">🛒 Add Week to Grocery</button><strong id="mealWeekTitle"></strong></div><div id="mealGrid" class="mealGrid"></div></div>
+<div id="recipeLibraryView" class="hidden"><div class="recipeToolbar"><div><h3>Our Recipes</h3><p>Family favorites you can reuse in the meal planner.</p></div><div><button id="importRecipeBtn" class="ghost">↗ Import Recipe</button><button id="addRecipeBtn" class="primary">+ Add Recipe</button></div></div><div id="recipeGrid" class="recipeGrid"></div></div>
+</section>
 <section id="listsPage" class="page">
 <div class="pageHead"><div><h2>Lists</h2><p>Shared grocery and family lists.</p></div><button id="addListBtn" class="primary">+ New List</button></div>
 <div class="listsLayout"><aside class="listSidebar"><div id="listTabs"></div></aside><section class="listWorkspace">
@@ -74,6 +78,7 @@
 <script src="calendar.js"></script>
 <script src="weather.js"></script>
 <script src="chores.js"></script>
+<script src="recipes.js"></script>
 <script src="meals.js"></script>
 <script src="lists.js"></script>
 <script src="app.js"></script>

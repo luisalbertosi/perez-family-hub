@@ -1,5 +1,14 @@
-# Perez Family Hub v0.10.1
-Adds shared Lists: multiple lists, add/check/delete items, counts, rename/delete lists, and clear checked. List records are shared through the existing Perez Family Google Calendar and hidden from the normal Calendar view.
+# Perez Family Hub v0.11
 
+Meals + Recipes upgrade:
+- Weekly meal planner preserved
+- Shared family recipe library
+- Add/edit/delete recipes with ingredients, instructions, time, tags and source URL
+- Best-effort recipe URL import using standard Recipe JSON-LD when the source site permits browser access
+- Pick a saved recipe while scheduling a meal
+- Quick meal choices: Leftovers, Eating Out, Takeout
+- Add all saved-recipe ingredients from the visible week to the shared Grocery list
+- Recipe and list records remain hidden from the normal calendar
+- Persistent list/recipe retrieval independent of their original creation date
 
-v0.10.1: compact header, local weather, Family-default colored event assignment, 30-day Coming Next, and calendar chore indicators.
+Recipe URL import is best-effort because many recipe websites block cross-origin browser fetching. When blocked, Family Hub keeps the URL and opens the recipe editor for manual completion.

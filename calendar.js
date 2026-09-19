@@ -6,7 +6,7 @@ window.PFHCalendar=(function(){
  const parse=s=>{let [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
  const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
  function monday(d){d=new Date(d);d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d}
- function fromGoogle(g){let x=g.extendedProperties?.shared||{};if(x.pfhType==="chore"||x.pfhType==="meal"||x.pfhType==="list")return null;let all=!!g.start?.date;return {id:g.id,title:g.summary||"(Untitled)",person:x.pfhPerson||"FAMILY",allDay:all,date:all?g.start.date:g.start.dateTime.slice(0,10),start:all?"":g.start.dateTime.slice(11,16),end:all?"":g.end.dateTime.slice(11,16),notes:g.description||""}}
+ function fromGoogle(g){let x=g.extendedProperties?.shared||{};if(x.pfhType==="chore"||x.pfhType==="meal"||x.pfhType==="list"||x.pfhType==="recipe")return null;let all=!!g.start?.date;return {id:g.id,title:g.summary||"(Untitled)",person:x.pfhPerson||"FAMILY",allDay:all,date:all?g.start.date:g.start.dateTime.slice(0,10),start:all?"":g.start.dateTime.slice(11,16),end:all?"":g.end.dateTime.slice(11,16),notes:g.description||""}}
  function loadFromItems(items){
    events=(items||[]).map(fromGoogle).filter(Boolean);
    chores=(items||[]).map(g=>{let x=g.extendedProperties?.shared||{};if(x.pfhType!=="chore"||x.pfhDone==="true")return null;return {id:g.id,title:g.summary||"Chore",person:x.pfhPerson||"FAMILY",date:g.start?.date||g.start?.dateTime?.slice(0,10)}}).filter(Boolean);
