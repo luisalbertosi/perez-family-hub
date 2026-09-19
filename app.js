@@ -12,7 +12,7 @@ window.PFHApp=(function(){
    authUI();
  }catch(e){authUI();console.error(e)}}
  function pages(){document.querySelectorAll(".bottomNav button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".bottomNav button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$("#"+b.dataset.page+"Page").classList.add("active")})}
- function boot(){clock();setInterval(clock,30000);PFHCalendar.init();PFHChores.init();PFHMeals.init();PFHLists.init();pages();PFHGoogle.init();authUI();$("#connectionBtn").onclick=()=>PFHGoogle.isConnected()?syncAll():PFHGoogle.connect();window.addEventListener("pfh-auth",()=>{authUI();syncAll()});setTimeout(()=>{PFHGoogle.init();authUI();if(PFHGoogle.isConnected())syncAll()},700)}
+ function boot(){clock();setInterval(clock,30000);PFHCalendar.init();PFHChores.init();PFHMeals.init();PFHLists.init();PFHWeather.init();pages();PFHGoogle.init();authUI();$("#connectionBtn").onclick=()=>PFHGoogle.isConnected()?syncAll():PFHGoogle.connect();window.addEventListener("pfh-auth",()=>{authUI();syncAll()});setTimeout(()=>{PFHGoogle.init();authUI();if(PFHGoogle.isConnected())syncAll()},700)}
  document.addEventListener("DOMContentLoaded",boot);
  return {syncAll};
 })();
