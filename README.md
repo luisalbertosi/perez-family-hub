@@ -1,4 +1,4 @@
-# Perez Family Hub v0.12.1
+# Perez Family Hub v0.12.2
 
 Firestore migration release:
 - Calendar events remain in Google Calendar.

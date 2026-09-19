@@ -2,7 +2,20 @@ window.PFHFirebase=(function(){
  const CONFIG={apiKey:"AIzaSyCmyayR7_veaP62Y38Z46FcvzqyQBi297w",authDomain:"perez-family-hub-509018.firebaseapp.com",projectId:"perez-family-hub-509018",storageBucket:"perez-family-hub-509018.firebasestorage.app",messagingSenderId:"625809892764",appId:"1:625809892764:web:52ce6ff926a7737aff1459"};
  let db=null,auth=null;
  function init(){if(!window.firebase)throw Error("Firebase SDK did not load");if(!firebase.apps.length)firebase.initializeApp(CONFIG);db=firebase.firestore();auth=firebase.auth();auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(()=>{});}
- async function ensureAuth(){if(!auth)init();if(auth.currentUser)return auth.currentUser;const token=PFHGoogle.getAccessToken();if(!token)throw Error("Connect Google first.");const credential=firebase.auth.GoogleAuthProvider.credential(null,token);const r=await auth.signInWithCredential(credential);return r.user;}
+ async function ensureAuth(){
+   if(!auth)init();
+   if(auth.currentUser)return auth.currentUser;
+   const provider=new firebase.auth.GoogleAuthProvider();
+   provider.setCustomParameters({prompt:"select_account"});
+   try{
+     const r=await auth.signInWithPopup(provider);
+     return r.user;
+   }catch(e){
+     if(e?.code==="auth/popup-blocked")throw Error("Firebase sign-in popup was blocked. Please allow popups for this site and try again.");
+     if(e?.code==="auth/unauthorized-domain")throw Error("This Family Hub address is not yet authorized in Firebase Authentication. Add luisalbertosi.github.io under Authentication > Settings > Authorized domains, then try again.");
+     throw e;
+   }
+ }
  async function all(collection){await ensureAuth();const snap=await db.collection(collection).get();return snap.docs.map(d=>({id:d.id,...d.data()}));}
  async function set(collection,id,data){await ensureAuth();const ref=id?db.collection(collection).doc(String(id)):db.collection(collection).doc();await ref.set({...data,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:false});return ref.id;}
  async function remove(collection,id){await ensureAuth();await db.collection(collection).doc(String(id)).delete();}
